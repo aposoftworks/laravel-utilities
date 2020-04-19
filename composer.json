@@ -1,0 +1,32 @@
+{
+    "name": "aposoftworks/laravel-utilities",
+    "description": "A general set of tools to use inside of laravel that will help you during development.",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Rafael",
+            "email": "rafael.chaves98@hotmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Aposoftworks\\LaravelUtilities\\":"src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aposoftworks\\LaravelUtilities\\Providers\\UtilitiesServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^7.2.5"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^3.7",
+        "phpunit/phpunit": "^7.5"
+    }
+}
