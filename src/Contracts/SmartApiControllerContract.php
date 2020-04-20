@@ -2,20 +2,20 @@
 
 namespace Aposoftworks\LaravelUtilities\Contracts;
 
-interface RepositoryContract {
+interface SmartApiControllerContract {
 
     //-------------------------------------------------
     // Display types
 	//-------------------------------------------------
 
-	public static function index ($perPage = 25); 	//list
-	public static function show ($id);				//single
+	public static function index (); 		//list
+	public static function show ();			//single
 
     //-------------------------------------------------
     // Effect types
 	//-------------------------------------------------
 
-	public static function store (array $fields);
-	public static function update ($model, array $fields);
-	public static function destroy ($model);
+	public static function store ();
+	public static function update ();
+	public static function destroy ();
 }

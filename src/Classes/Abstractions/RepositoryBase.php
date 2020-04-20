@@ -20,7 +20,7 @@ abstract class RepositoryBase implements RepositoryContract {
     // Reference types
 	//-------------------------------------------------
 
-	public function getModel () : string {
+	private function getModel () : string {
 		return $this->model;
 	}
 
@@ -29,11 +29,20 @@ abstract class RepositoryBase implements RepositoryContract {
 	//-------------------------------------------------
 
 	public static function index ($perPage = 25) {
+		//Start singleton
+		self::initialize();
+
 		return self::$singleton->getModel()::paginate($perPage);
 	}
 
-	public static function show ($id) {
-		return self::$singleton->getModel()::findOrFail($id);
+	public static function show ($model) {
+		//Start singleton
+		self::initialize();
+
+		if ($model instanceof Model)
+			return $model;
+		else
+			return self::$singleton->getModel()::findOrFail($model);
 	}
 
     //-------------------------------------------------
@@ -41,10 +50,16 @@ abstract class RepositoryBase implements RepositoryContract {
 	//-------------------------------------------------
 
 	public static function store (array $fields) {
+		//Start singleton
+		self::initialize();
+
 		return self::$singleton->getModel()::create($fields);
 	}
 
 	public static function update ($model, array $fields) {
+		//Start singleton
+		self::initialize();
+
 		if ($model instanceof Model)
 			return $model->update($fields);
 		else
@@ -52,10 +67,24 @@ abstract class RepositoryBase implements RepositoryContract {
 	}
 
 	public static function destroy ($model) {
+		//Start singleton
+		self::initialize();
+
 		if ($model instanceof Model)
 			return $model->delete();
 		else
 			return self::$singleton->getModel()::find($model)->delete();
+	}
+
+    //-------------------------------------------------
+    // Main methods
+	//-------------------------------------------------
+
+	private static function initialize () {
+		if (!isset(self::$singleton) || is_null(self::$singleton)) {
+			$class = get_called_class();
+			self::$singleton = new $class;
+		}
 	}
 
     //-------------------------------------------------
@@ -67,6 +96,9 @@ abstract class RepositoryBase implements RepositoryContract {
 	}
 
 	public static function __callStatic ($name, $arguments) {
+		//Start singleton
+		self::initialize();
+
 		return self::$singleton->{$name}(...$arguments);
 	}
 }
