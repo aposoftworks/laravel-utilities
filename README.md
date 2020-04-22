@@ -33,7 +33,7 @@ class YourRepository extends RepositoryBase {
 
 ```
 
-To use it, you can call the methods statically or just instanciate it.
+To use it, you must have an instance of it.
 
 ``` php
 <?php
@@ -44,9 +44,7 @@ use App\Http\Repositories\YourRepository;
 
 class TestController extends Controller {
 	public function index (YourRepository $repository) {
-	    //Both of those works
 	    $repository->index();
-	    YourRepository::index();
 	}
 }
 

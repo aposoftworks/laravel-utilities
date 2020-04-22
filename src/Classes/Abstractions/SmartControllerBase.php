@@ -74,11 +74,11 @@ abstract class SmartControllerBase implements SmartControllerContract {
     // View (render) types
 	//-------------------------------------------------
 
-	public static function create () {
+	public function create () {
 
 	}
 
-	public static function edit () {
+	public function edit () {
 
 	}
 
@@ -86,18 +86,18 @@ abstract class SmartControllerBase implements SmartControllerContract {
     // Display types
 	//-------------------------------------------------
 
-	public static function index () {
-		$repository = self::$singleton->getRepository();
+	public function index () {
+		$repository = $this->getRepository();
 		$list 		= (new $repository)::index();
-		$collection	= self::$singleton->getCollection();
+		$collection	= $this->getCollection();
 
 		return new $collection($list);
 	}
 
-	public static function show () {
-		$id 		= self::$singleton->getId();
-		$resource 	= self::$singleton->getResource();
-		$response	= self::$singleton->getRepository()::show($id);
+	public function show () {
+		$id 		= $this->getId();
+		$resource 	= $this->getResource();
+		$response	= $this->getRepository()::show($id);
 
 		return new $resource($response);
 	}
@@ -106,27 +106,27 @@ abstract class SmartControllerBase implements SmartControllerContract {
     // Effect types
 	//-------------------------------------------------
 
-	public static function store () {
-		$request 	= insertRequest(self::$singleton->getRequestCreate());
-		$response	= self::$singleton->getRepository()::store($request->validated());
-		$resource 	= self::$singleton->getResource();
+	public function store () {
+		$request 	= $this->insertRequest($this->getRequestCreate());
+		$response	= $this->getRepository()::store($request->validated());
+		$resource 	= $this->getResource();
 
 		return new $resource($response);
 	}
 
-	public static function update () {
-		$id 		= self::$singleton->getId();
-		$request 	= insertRequest(self::$singleton->getRequestUpdate());
-		$response 	= self::$singleton->getRepository()::update($id, $request->validated());
-		$resource 	= self::$singleton->getResource();
+	public function update () {
+		$id 		= $this->getId();
+		$request 	= $this->insertRequest($this->getRequestUpdate());
+		$response 	= $this->getRepository()::update($id, $request->validated());
+		$resource 	= $this->getResource();
 
 		return new $resource($response);
 	}
 
-	public static function destroy () {
-		$id 	= self::$singleton->getId();
+	public function destroy () {
+		$id 	= $this->getId();
 
-		return self::$singleton->getRepository()::destroy($id);
+		return $this->getRepository()::destroy($id);
 	}
 
     //-------------------------------------------------

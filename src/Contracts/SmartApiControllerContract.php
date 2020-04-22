@@ -8,14 +8,14 @@ interface SmartApiControllerContract {
     // Display types
 	//-------------------------------------------------
 
-	public static function index (); 		//list
-	public static function show ();			//single
+	public function index (); 		//list
+	public function show ();		//single
 
     //-------------------------------------------------
     // Effect types
 	//-------------------------------------------------
 
-	public static function store ();
-	public static function update ();
-	public static function destroy ();
+	public function store ();
+	public function update ();
+	public function destroy ();
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace Aposoftworks\LaravelUtilities\Classes\Abstractions;
+namespace Aposoftworks\LaravelUtilities\Abstractions;
 
 //Interfaces
-use Aposoftworks\LaravelUtilities\Contracts\SmartApiControllerContract;
+use Aposoftworks\LaravelUtilities\Contracts\SmartControllerLogicContract;
 
 //Traits
 use Aposoftworks\LaravelUtilities\Traits\DinamicRequest;
@@ -11,7 +11,7 @@ use Aposoftworks\LaravelUtilities\Traits\DinamicRequest;
 //Laravel
 use Illuminate\Support\Facades\Request;
 
-abstract class SmartApiControllerBase implements SmartApiControllerContract {
+abstract class SmartControllerLogic implements SmartControllerLogicContract {
 
     //-------------------------------------------------
     // Traits
@@ -21,16 +21,15 @@ abstract class SmartApiControllerBase implements SmartApiControllerContract {
 
     //-------------------------------------------------
     // Properties
-	//-------------------------------------------------
+    //-------------------------------------------------
 
-	protected static $singleton;
 	protected $name = null;
 
     //-------------------------------------------------
     // Reference types
 	//-------------------------------------------------
 
-	private function getId () : string {
+	protected function getId () : string {
 		//Get last defined id
 		if (is_null($this->name)) {
 			$parameters = Request::route()->parameters();
@@ -42,31 +41,31 @@ abstract class SmartApiControllerBase implements SmartApiControllerContract {
 		}
 	}
 
-	private function getName () : string {
+	protected function getName () : string {
 		return $this->name;
 	}
 
-	private function getModel () : string {
+	protected function getModel () : string {
 		return $this->model;
 	}
 
-	private function getRepository (): string {
+	protected function getRepository (): string {
 		return $this->repository;
 	}
 
-	private function getResource () : string {
+	protected function getResource () : string {
 		return $this->resource;
 	}
 
-	private function getCollection () : string {
+	protected function getCollection () : string {
 		return $this->collection;
 	}
 
-	private function getRequestCreate (): string {
+	protected function getRequestCreate (): string {
 		return $this->requestCreate;
 	}
 
-	private function getRequestUpdate (): string {
+	protected function getRequestUpdate (): string {
 		return $this->requestUpdate;
 	}
 
@@ -75,8 +74,7 @@ abstract class SmartApiControllerBase implements SmartApiControllerContract {
 	//-------------------------------------------------
 
 	public function index () {
-		$repository = $this->getRepository();
-		$list 		= (new $repository)::index();
+		$list 		= $this->repositoryInstance()->index();
 		$collection	= $this->getCollection();
 
 		return new $collection($list);
@@ -85,7 +83,7 @@ abstract class SmartApiControllerBase implements SmartApiControllerContract {
 	public function show () {
 		$id 		= $this->getId();
 		$resource 	= $this->getResource();
-		$response	= $this->getRepository()::show($id);
+		$response	= $this->repositoryInstance()->show($id);
 
 		return new $resource($response);
 	}
@@ -96,7 +94,7 @@ abstract class SmartApiControllerBase implements SmartApiControllerContract {
 
 	public function store () {
 		$request 	= $this->insertRequest($this->getRequestCreate());
-		$response	= $this->getRepository()::store($request->validated());
+		$response	= $this->repositoryInstance()->store($request->validated());
 		$resource 	= $this->getResource();
 
 		return new $resource($response);
@@ -105,7 +103,7 @@ abstract class SmartApiControllerBase implements SmartApiControllerContract {
 	public function update () {
 		$id 		= $this->getId();
 		$request 	= $this->insertRequest($this->getRequestUpdate());
-		$response 	= $this->getRepository()::update($id, $request->validated());
+		$response 	= $this->repositoryInstance()->update($id, $request->validated());
 		$resource 	= $this->getResource();
 
 		return new $resource($response);
@@ -114,18 +112,15 @@ abstract class SmartApiControllerBase implements SmartApiControllerContract {
 	public function destroy () {
 		$id 	= $this->getId();
 
-		return $this->getRepository()::destroy($id);
+		return $this->repositoryInstance()->destroy($id);
 	}
 
     //-------------------------------------------------
-    // Magic methods
-	//-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
 
-	public function __construct () {
-		self::$singleton = $this;
-	}
-
-	public static function __callStatic ($name, $arguments) {
-		return self::$singleton->{$name}(...$arguments);
-	}
+    protected function repositoryInstance () {
+        $repository = $this->getRepository();
+        return new $repository;
+    }
 }
