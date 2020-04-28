@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ path }};
+
+//Classes
+use Aposoftworks\LaravelUtilities\Abstractions\RepositoryBasic;
+
+//Data
+use App\{{ model }} as Model;
+
+class {{ class }} extends RepositoryBasic {
+	public $model = Model::class;
+}

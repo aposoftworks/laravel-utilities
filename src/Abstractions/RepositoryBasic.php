@@ -8,7 +8,7 @@ use Aposoftworks\LaravelUtilities\Contracts\RepositoryContract;
 //Classes
 use Illuminate\Database\Eloquent\Model;
 
-abstract class RepositoryBase implements RepositoryContract {
+abstract class RepositoryBasic implements RepositoryContract {
 
     //-------------------------------------------------
     // Reference types

@@ -6,22 +6,22 @@ namespace Aposoftworks\LaravelUtilities\Commands;
 use Illuminate\Console\Command;
 
 //Classes
-use Aposoftworks\LaravelUtilities\Classes\Helpers\CreateNewRepository;
+use Aposoftworks\LaravelUtilities\Classes\Helpers\CreateNewSmartController;
 
-class NewRepositoryCommand extends Command {
+class NewSmartControllerCommand extends Command {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:repository {classname : The name of the repository to be created} {--M|model=} {--P|path=} {--R|relation}';
+    protected $signature = 'make:smartcontroller {classname : The name of the smart controller to be created} {--R|relation}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Creates a new repository to be used inside of your controllers';
+    protected $description = 'Creates a new smart controller to be used inside of your routes';
 
     /**
      * Create a new command instance.
@@ -38,11 +38,11 @@ class NewRepositoryCommand extends Command {
      * @return mixed
      */
     public function handle() {
-        if (CreateNewRepository::create($this->arguments(), $this->options(), $this)) {
-            $this->info("Repository created successfully");
+        if (CreateNewSmartController::create($this->arguments(), $this->options(), $this)) {
+            $this->info("Smart controller created successfully");
         }
         else {
-            $this->warn("Repository already exists");
+            $this->warn("Smart controller already exists");
         }
     }
 }
