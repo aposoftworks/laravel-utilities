@@ -14,7 +14,7 @@ class NewSmartControllerCommand extends Command {
      *
      * @var string
      */
-    protected $signature = 'make:smartcontroller {classname : The name of the smart controller to be created} {--R|relation}';
+    protected $signature = 'make:smartcontroller {classname : The name of the smart controller to be created}';
 
     /**
      * The console command description.

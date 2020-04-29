@@ -14,7 +14,7 @@ composer require aposoftworks/laravel-utilities
 
 ## Tools
 
-All of those tools can have their methods overwritten for custom implementation (just like any other good OO class).
+All of those tools can have their methods overwritten for custom implementation (just like any other good OO class). You can create the repositories and the smart controllers using artisan commands, with: `make:repository` and `make:smartcontroller`.
 
 ### Repositories
 A simple implementation of the repository pattern that uses Laravel's standard model. You can use it by extending our repository base and setting a public model variable inside of it. It uses the default naming from Laravel: index, show, store, update, destroy.
@@ -60,7 +60,7 @@ PS: We have a smart api controller (SmartApiController) that can be used to only
 
 namespace App\Http\Controllers;
 
-use Aposoftworks\LaravelUtilities\Classes\Abstractions\SmartControllerBase;
+use Aposoftworks\LaravelUtilities\Classes\Abstractions\Relational\OneToOne;
 use Path\To\Your\Model;
 use Path\To\Your\Repository;
 use Path\To\Your\Collection;
@@ -68,7 +68,7 @@ use Path\To\Your\Resource;
 use Path\To\Your\RequestCreate;
 use Path\To\Your\RequestUpdate;
 
-class CustomSmartController extends RepositoryBase {
+class CustomSmartController extends OneToOne {
 	public $model 		    = Model::class;
 	public $resource 	    = Resource::class;
 	public $collection 	    = Collection::class;
@@ -86,3 +86,13 @@ Route::resource("controller", "CustomSmartController");
 //or
 Route::apiResource("controller", "CustomSmartController");
 ```
+
+### Traits
+
+- \Aposoftworks\LaravelUtilities\Traits\SID
+
+Creates a random string to be used in the id field (this is not an UUID, it's just a random string). You can change it's length adding the `sidSize` field in your model.
+
+- \Aposoftworks\LaravelUtilities\Traits\Searchable
+
+Add a local scope `->search('to search string')` that will look for the `searchableFields` array inside the model to make a simple query to the database.

@@ -15,7 +15,6 @@ class CreateNewSmartController {
 		$class 		= class_basename($arguments["classname"]);
 		$model 		= CreateNewSmartController::findModelName($class);
 		$path 		= CreateNewSmartController::createPath($arguments["classname"]);
-		$stubtype 	= $options["relation"] 	? ".relation":(preg_match("/relation/mi", $class) ? ".relation":"");
 		$savepath	= app_path(preg_replace("/App\\\\/", "", $path))."\\".$class.".php";
 
 		//Check if repository already exists
@@ -23,7 +22,7 @@ class CreateNewSmartController {
 
 		//Prepare stub
 		$stub = new StubHelper;
-		$stub->getFile(__DIR__."/../../Stubs/smartcontroller".$stubtype.".stub");
+		$stub->getFile(__DIR__."/../../Stubs/smartcontroller.stub");
 		$stub->setVariables(["class" => $class, "model" => $model, "path" => $path]);
 
 		//Save stub
