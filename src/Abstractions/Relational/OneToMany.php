@@ -49,20 +49,46 @@ abstract class OneToMany implements OneToManyContract {
     // Effect types
 	//-------------------------------------------------
 
-	public function add ($parent, array $fields) {
+	public function add ($parent, $insert) {
 		$relation = $this->getRelatedMethod($parent);
 
-		return $relation->create($fields);
+		if (is_array($insert)) {
+			//Nothing to update
+			if (count($insert) == 0)
+				return;
+
+			$addedModels = [];
+
+			//Loop and save all individually
+			for ($i = 0; $i < count($insert); $i++) {
+				$row = $insert[$i];
+
+				if ($row instanceof Model) {
+					$addedModels[] = $row;
+					$relation->associate($insert);
+				}
+				else {
+					$addedModels[] = $relation->create($insert);
+				}
+			}
+
+			//Return all models inserted
+			return $addedModels;
+		}
+		//Bind association
+		if ($insert instanceof Model)
+			return $relation->associate($insert);
+
+		//Create relation from fields
+		return $relation->create($insert);
 	}
 
-	public function set ($parent, array $fields) {
+	public function set ($parent, $insert) {
 		//Clear all relations
 		$this->clear($parent);
 
 		//Add new relations
-		$relation = $this->getRelatedMethod($parent);
-
-		return $relation->create($fields);
+		return $this->add($parent, $insert);
 	}
 
 	public function update ($parent, $related, array $fields) {

@@ -3,13 +3,13 @@
 namespace {{ path }};
 
 //Classes
-use Aposoftworks\LaravelUtilities\Abstractions\Relational\OneToOne;
+use Aposoftworks\LaravelUtilities\Abstractions\Relational\OneToMany;
 
 //Data
 use App\User 		as ParentModel;
 use App\{{ model }}	as RelatedModel;
 
-class {{ class }} extends OneToOne {
+class {{ class }} extends OneToMany {
 	//This is base model that has a relationModel
 	public $parent 			= ParentModel::class;
 	//This is a dependency of the main model

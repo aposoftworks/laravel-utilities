@@ -14,7 +14,7 @@ interface OneToOneContract {
     // Effect types
 	//-------------------------------------------------
 
-	public function store ($parent, array $fields);
+	public function store ($parent, $insert);
 	public function update ($parent, array $fields);
 	public function destroy ($parent);
 }

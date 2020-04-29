@@ -15,8 +15,8 @@ interface OneToManyContract {
     // Effect types
 	//-------------------------------------------------
 
-	public function add ($parent, array $fields);
-	public function set ($parent, array $fields);
+	public function add ($parent, $insert);
+	public function set ($parent, $insert);
 	public function update ($parent, $related, array $fields);
 	public function destroy ($parent, $related);
 	public function clear ($parent);

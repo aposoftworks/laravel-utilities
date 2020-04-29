@@ -14,7 +14,7 @@ class NewRepositoryCommand extends Command {
      *
      * @var string
      */
-    protected $signature = 'make:repository {classname : The name of the repository to be created} {--M|model=} {--P|path=} {--R|relation}';
+    protected $signature = 'make:repository {classname : The name of the repository to be created} {--M|model=} {--P|path=} {--R|relation=onetoone}';
 
     /**
      * The console command description.

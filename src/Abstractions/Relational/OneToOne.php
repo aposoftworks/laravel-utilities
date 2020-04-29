@@ -44,10 +44,15 @@ abstract class OneToOne implements OneToOneContract {
     // Effect types
 	//-------------------------------------------------
 
-	public function store ($parent, array $fields) {
+	public function store ($parent, $insert) {
 		$relation = $this->getRelatedMethod($parent);
 
-		return $relation->create($fields);
+		//Model already exists, only update the foreign key
+		if ($insert instanceof Model)
+			return $relation->associate($insert);
+
+		//Create model from fields
+		return $relation->create($insert);
 	}
 	public function update ($parent, array $fields) {
 		$relation = $this->getRelatedMethod($parent);
