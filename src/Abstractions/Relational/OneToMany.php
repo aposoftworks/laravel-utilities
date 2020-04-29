@@ -3,13 +3,13 @@
 namespace Aposoftworks\LaravelUtilities\Abstractions\Relational;
 
 //Interfaces
-use Aposoftworks\LaravelUtilities\Contracts\RelationalRepositoryContract;
+use Aposoftworks\LaravelUtilities\Contracts\Relational\OneToManyContract;
 
 //Classes
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class OneToMany implements RelationalRepositoryContract {
+abstract class OneToMany implements OneToManyContract {
 
     //-------------------------------------------------
     // Reference types
@@ -49,44 +49,61 @@ abstract class OneToMany implements RelationalRepositoryContract {
     // Effect types
 	//-------------------------------------------------
 
-	public function store ($parent, array $fields) {
-		$relation = $this->getRelatedMethod($parent)();
+	public function add ($parent, array $fields) {
+		$relation = $this->getRelatedMethod($parent);
 
-		$relation->save($fields);
+		return $relation->create($fields);
+	}
+
+	public function set ($parent, array $fields) {
+		//Clear all relations
+		$this->clear($parent);
+
+		//Add new relations
+		$relation = $this->getRelatedMethod($parent);
+
+		return $relation->create($fields);
 	}
 
 	public function update ($parent, $related, array $fields) {
 		$relation = $this->getRelatedMethod($parent);
 
-		if ($related instanceof Model && $relation->contains($related))
-			$related->update($fields);
-		else
-			$relation()->findOrFail($related)->update($fields);
+		//Find model if id given
+		if (!($related instanceof Model && $relation->contains($related)))
+			$related = $relation->findOrFail($related);
+
+		//Actually update
+		$related->update($fields);
+
+		//Return info
+		return $related;
 	}
 
 	public function destroy ($parent, $related) {
 		$relation = $this->getRelatedMethod($parent);
 
-		if ($related instanceof Model && $relation->contains($related))
-			$related->delete();
-		else
-			$relation()->findOrFail($related)->delete();
+		//Find model if id given
+		if (!($related instanceof Model && $relation->contains($related)))
+			$related = $relation->findOrFail($related);
+
+		//Actually delete
+		return $related->delete();
 	}
 
 	public function clear ($parent) {
 		$relation = $this->getRelatedMethod($parent);
 
-		$relation()->delete();
+		return $relation->delete();
 	}
 
     //-------------------------------------------------
     // Helpers
 	//-------------------------------------------------
 
-	private function getRelatedMethod ($model) : Model {
+	private function getRelatedMethod ($model) {
 		if ($model instanceof Model)
-			return $model->{$this->getRelatedName()};
+			return $model->{$this->getRelatedName()}();
 		else
-			return $this->getParent()::findOrFail($model)->{$this->getRelatedName()};
+			return $this->getParent()::findOrFail($model)->{$this->getRelatedName()}();
 	}
 }

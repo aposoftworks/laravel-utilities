@@ -22,7 +22,20 @@ class UtilitiesServiceProvider extends ServiceProvider {
 			Route::get($path."/{".$parent."}/{".$related."}", 	$controller."@show")->name($parent.".".$related.".show");
 			Route::post($path."/{".$parent."}", 				$controller."@store")->name($parent.".".$related.".store");
 			Route::patch($path."/{".$parent."}",				$controller."@update")->name($parent.".".$related.".update");
+			Route::put($path."/{".$parent."}",					$controller."@update")->name($parent.".".$related.".update");
 			Route::delete($path."/{".$parent."}",				$controller."@destroy")->name($parent.".".$related.".destroy");
+		});
+
+		Route::macro("oneToManyResource", function ($path, $controller, $parent = "parent") {
+			$related 	= Str::singular(class_basename($path));
+
+			Route::get($path."/{".$parent."}", 						$controller."@index")->name($parent.".".$related.".index");
+			Route::get($path."/{".$parent."}/{".$related."}", 		$controller."@show")->name($parent.".".$related.".show");
+			Route::post($path."/{".$parent."}", 					$controller."@add")->name($parent.".".$related.".add");
+			Route::patch($path."/{".$parent."}",					$controller."@set")->name($parent.".".$related.".set");
+			Route::delete($path."/{".$parent."}", 					$controller."@clear")->name($parent.".".$related.".clear");
+			Route::patch($path."/{".$parent."}/{".$related."}",		$controller."@update")->name($parent.".".$related.".update");
+			Route::delete($path."/{".$parent."}/{".$related."}",	$controller."@destroy")->name($parent.".".$related.".destroy");
 		});
 	}
 

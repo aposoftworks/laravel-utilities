@@ -8,13 +8,13 @@ interface OneToOneContract {
     // Display types
 	//-------------------------------------------------
 
-	public function show ($model); 	//list
+	public function show ($parent); 	//list
 
     //-------------------------------------------------
     // Effect types
 	//-------------------------------------------------
 
-	public function store ($model, array $fields);
-	public function update ($model, array $fields);
-	public function destroy ($model);
+	public function store ($parent, array $fields);
+	public function update ($parent, array $fields);
+	public function destroy ($parent);
 }
