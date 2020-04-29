@@ -3,11 +3,11 @@
 namespace {{ path }};
 
 //Classes
-use Aposoftworks\LaravelUtilities\Abstractions\RepositoryBasic;
+use Aposoftworks\LaravelUtilities\Abstractions\Repository;
 
 //Data
 use App\{{ model }} as Model;
 
-class {{ class }} extends RepositoryBasic {
+class {{ class }} extends Repository {
 	public $model = Model::class;
 }

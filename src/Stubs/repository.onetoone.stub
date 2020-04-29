@@ -1,0 +1,19 @@
+<?php
+
+namespace {{ path }};
+
+//Classes
+use Aposoftworks\LaravelUtilities\Abstractions\Relational\Repository;
+
+//Data
+use App\User 		as ParentModel;
+use App\{{ model }}	as RelatedModel;
+
+class {{ class }} extends Repository {
+	//This is base model that has a relationModel
+	public $parent 			= ParentModel::class;
+	//This is a dependency of the main model
+	public $related 		= RelatedModel::class;
+	//Sets a oneToMany or oneToOne relation
+	public $hasMany 		= false;
+}

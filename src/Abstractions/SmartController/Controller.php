@@ -1,8 +1,10 @@
 <?php
 
-namespace Aposoftworks\LaravelUtilities\Abstractions;
+namespace Aposoftworks\LaravelUtilities\Abstractions\SmartController;
 
-abstract class SmartControllerBase extends SmartControllerLogic {
+use Aposoftworks\LaravelUtilities\Abstractions\SmartController\ControllerLogic;
+
+abstract class Controller extends ControllerLogic {
 
     //-------------------------------------------------
     // View (render) types

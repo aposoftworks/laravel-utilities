@@ -13,20 +13,17 @@ class CreateNewRepository {
 
 	public static function create ($arguments, $options) {
 		$class 		= class_basename($arguments["classname"]);
-		$model 		= $options["model"] ? $options["model"]:(CreateNewRepository::findModelName($class));
-		$path 		= $options["path"] ? $options["path"]:(CreateNewRepository::createPath($arguments["classname"]));
+		$model 		= $options["model"] 	? $options["model"]:(CreateNewRepository::findModelName($class));
+		$path 		= $options["path"] 		? $options["path"]:(CreateNewRepository::createPath($arguments["classname"]));
+		$stubtype 	= $options["relation"] 	? ".relation":(preg_match("/relation/mi", $class) ? ".relation":"");
 		$savepath	= app_path(preg_replace("/App\\\\/", "", $path))."\\".$class.".php";
 
 		//Check if repository already exists
 		if (file_exists($savepath)) return false;
 
-		//Check if the directory exists
-		if (!is_dir(app_path(preg_replace("/App\\\\/", "", $path))))
-			mkdir(app_path(preg_replace("/App\\\\/", "", $path)));
-
 		//Prepare stub
 		$stub = new StubHelper;
-		$stub->getFile(__DIR__."/../../Stubs/repository.stub");
+		$stub->getFile(__DIR__."/../../Stubs/repository".$stubtype.".stub");
 		$stub->setVariables(["class" => $class, "model" => $model, "path" => $path]);
 
 		//Save stub

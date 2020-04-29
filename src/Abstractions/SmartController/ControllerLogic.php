@@ -1,6 +1,6 @@
 <?php
 
-namespace Aposoftworks\LaravelUtilities\Abstractions;
+namespace Aposoftworks\LaravelUtilities\Abstractions\SmartController;
 
 //Interfaces
 use Aposoftworks\LaravelUtilities\Contracts\SmartControllerLogicContract;
@@ -11,7 +11,7 @@ use Aposoftworks\LaravelUtilities\Traits\DinamicRequest;
 //Laravel
 use Illuminate\Support\Facades\Request;
 
-abstract class SmartControllerLogic implements SmartControllerLogicContract {
+abstract class ControllerLogic implements SmartControllerLogicContract {
 
     //-------------------------------------------------
     // Traits

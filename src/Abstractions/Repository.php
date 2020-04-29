@@ -8,7 +8,7 @@ use Aposoftworks\LaravelUtilities\Contracts\RepositoryContract;
 //Classes
 use Illuminate\Database\Eloquent\Model;
 
-abstract class RepositoryBasic implements RepositoryContract {
+abstract class Repository implements RepositoryContract {
 
     //-------------------------------------------------
     // Reference types
@@ -51,7 +51,7 @@ abstract class RepositoryBasic implements RepositoryContract {
 	public function update ($model, array $fields) {
         //Get model
         $modelPath  = $this->getModel();
-        $model      = ($model instanceof Model)? $model:$modelPath::find($model);
+        $model      = ($model instanceof Model)? $model:$modelPath::findOrFail($model);
 
         //Update
         $model->fill($fields);
@@ -64,6 +64,6 @@ abstract class RepositoryBasic implements RepositoryContract {
 		if ($model instanceof Model)
 			return $model->delete();
 		else
-			return $this->getModel()::find($model)->delete();
+			return $this->getModel()::findOrFail($model)->delete();
 	}
 }
