@@ -15,7 +15,7 @@ class CreateNewRepository {
 		$class 		= class_basename($arguments["classname"]);
 		$model 		= $options["model"] 	? $options["model"]:(CreateNewRepository::findModelName($class));
 		$path 		= $options["path"] 		? $options["path"]:(CreateNewRepository::createPath($arguments["classname"]));
-		$stubtype 	= $options["relation"] 	? $options["relation"]:(preg_match("/relation/mi", $class) ? ".onetoone":"");
+		$stubtype 	= $options["relation"] 	? $options["relation"]:(preg_match("/relation/mi", $class) ? "onetoone":"");
 		$savepath	= app_path(preg_replace("/App\\\\/", "", $path))."\\".$class.".php";
 
 		//Check if repository already exists
@@ -23,7 +23,7 @@ class CreateNewRepository {
 
 		//Prepare stub
 		$stub = new StubHelper;
-		$stub->getFile(__DIR__."/../../Stubs/repository".$stubtype.".stub");
+		$stub->getFile(__DIR__."/../../Stubs/repository".($stubtype === "" ? "":(".".$stubtype)).".stub");
 		$stub->setVariables(["class" => $class, "model" => $model, "path" => $path]);
 
 		//Save stub

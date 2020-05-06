@@ -47,11 +47,22 @@ abstract class OneToOne implements OneToOneContract {
 	public function store ($parent, $insert) {
 		$relation = $this->getRelatedMethod($parent);
 
+		//Check if already present
+		if ($relation->exists()) {
+			$toupdate = $relation->first();
+			if ($insert instanceof Model)
+				$toupdate->fill($insert->getAttributes());
+			else
+				$toupdate->fill($insert);
+
+			$toupdate->save();
+			return $toupdate;
+		}
+
 		//Model already exists, only update the foreign key
 		if ($insert instanceof Model)
 			return $relation->associate($insert);
 
-		//Create model from fields
 		return $relation->create($insert);
 	}
 	public function update ($parent, array $fields) {
