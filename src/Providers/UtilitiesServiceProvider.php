@@ -9,12 +9,12 @@ use Illuminate\Support\ServiceProvider;
 //Commands
 use Aposoftworks\LaravelUtilities\Commands\NewRepositoryCommand;
 use Aposoftworks\LaravelUtilities\Commands\NewSmartControllerCommand;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
-//use Illuminate\Routing\Route;
 
 class UtilitiesServiceProvider extends ServiceProvider {
 	public function register () {
-		//Macros
+		//Route macros
 		Route::macro("oneToOneResource", function ($path, $controller, $parent = "parent") {
 			$related 	= Str::singular(class_basename($path));
 
