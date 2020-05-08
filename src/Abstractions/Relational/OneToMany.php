@@ -52,29 +52,6 @@ abstract class OneToMany implements OneToManyContract {
 	public function add ($parent, $insert) {
 		$relation = $this->getRelatedMethod($parent);
 
-		if (is_array($insert)) {
-			//Nothing to update
-			if (count($insert) == 0)
-				return;
-
-			$addedModels = [];
-
-			//Loop and save all individually
-			for ($i = 0; $i < count($insert); $i++) {
-				$row = $insert[$i];
-
-				if ($row instanceof Model) {
-					$addedModels[] = $row;
-					$relation->associate($insert);
-				}
-				else {
-					$addedModels[] = $relation->create($insert);
-				}
-			}
-
-			//Return all models inserted
-			return $addedModels;
-		}
 		//Bind association
 		if ($insert instanceof Model)
 			return $relation->associate($insert);
@@ -92,12 +69,6 @@ abstract class OneToMany implements OneToManyContract {
 	}
 
 	public function update ($parent, $related, array $fields) {
-		$relation = $this->getRelatedMethod($parent);
-
-		//Find model if id given
-		if (!($related instanceof Model && $relation->contains($related)))
-			$related = $relation->findOrFail($related);
-
 		//Actually update
 		$related->update($fields);
 
@@ -106,12 +77,6 @@ abstract class OneToMany implements OneToManyContract {
 	}
 
 	public function destroy ($parent, $related) {
-		$relation = $this->getRelatedMethod($parent);
-
-		//Find model if id given
-		if (!($related instanceof Model && $relation->contains($related)))
-			$related = $relation->findOrFail($related);
-
 		//Actually delete
 		return $related->delete();
 	}
