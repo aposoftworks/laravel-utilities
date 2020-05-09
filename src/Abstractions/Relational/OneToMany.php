@@ -42,7 +42,12 @@ abstract class OneToMany implements OneToManyContract {
 	}
 
 	public function show ($parent, $related) {
-		return $this->getRelatedMethod($parent)()->findOrFail($related);
+		if ($related instanceof Model && $this->getRelatedMethod($parent)->contains($related)) {
+			return $related;
+		}
+		else {
+			return $this->getRelatedMethod($parent)->findOrFail($related);
+		}
 	}
 
     //-------------------------------------------------
